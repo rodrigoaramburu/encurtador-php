@@ -1,0 +1,22 @@
+{
+    "name": "rodrigoaramburu/encurtador",
+    "require-dev": {
+        "pestphp/pest": "^1.21"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rodrigoaramburu\\Encurtador\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rodrigo Aramburu",
+            "email": "rodrigoaramburu@gmail.com"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}

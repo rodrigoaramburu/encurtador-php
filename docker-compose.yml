@@ -1,0 +1,48 @@
+version: "3.1"
+
+services:
+  mariadb:
+    image: 'mariadb:10.6'
+    container_name: mariadb_encurtador
+    working_dir: /application
+    environment: 
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=encurtador
+      - MYSQL_USER=encurtador
+      - MYSQL_PASSWORD=encurtador
+    ports:
+      - "58003:3306"
+    volumes:
+      - './docker/mariadb_data:/var/lib/mysql'
+
+  phpmyadmin:
+    image: 'phpmyadmin'
+    container_name: phpmyadmin_encurtador
+    restart: 'always'
+    ports: 
+      - '8009:80'
+    environment:
+      - PMA_ARBITRARY=1
+      - UPLOAD_LIMIT=300M
+      - PMA_HOST=mariadb_encurtador
+      - PMA_USER=encurtador
+      - PMA_PASSWORD=encurtador
+      - PMA_DATABASE=encurtador
+
+  webserver:
+    image: 'nginx:alpine'
+    container_name: webserver_encurtador
+    working_dir: /application
+    volumes:
+      - '.:/application'
+      - './docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
+    ports:
+      - '8000:80'
+
+  php-fpm:
+    build: 'docker/php-fpm'
+    container_name: php-fpm_encurtador
+    working_dir: /application
+    volumes:
+      - '.:/application'
+      - './docker/php-fpm/php-fpm.conf:/etc/php/8.1/fpm/conf.d/99-overrides.ini'

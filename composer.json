@@ -1,22 +1,45 @@
 {
     "name": "rodrigoaramburu/encurtador",
-    "require-dev": {
-        "pestphp/pest": "^1.21"
-    },
-    "autoload": {
-        "psr-4": {
-            "Rodrigoaramburu\\Encurtador\\": "app/"
-        }
-    },
+
     "authors": [
         {
             "name": "Rodrigo Aramburu",
             "email": "rodrigoaramburu@gmail.com"
         }
     ],
+
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        },
+        "files": [
+            "tests/helpers.php"
+        ]
+    },
+
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
+    },
+    "require": {
+        "slim/slim": "^4.10",
+        "slim/psr7": "^1.5",
+        "php-di/php-di": "^6.3",
+        "vlucas/phpdotenv": "^5.4",
+        "monolog/monolog": "^3.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^1.21",
+        "mockery/mockery": "^1.5"
+    },
+    "scripts": {
+        "test": "./vendor/bin/pest",
+        "coverage-report": "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage-html coverage"
     }
 }

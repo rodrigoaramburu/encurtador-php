@@ -46,3 +46,21 @@ services:
     volumes:
       - '.:/application'
       - './docker/php-fpm/php-fpm.conf:/etc/php/8.1/fpm/conf.d/99-overrides.ini'
+
+
+  redis: 
+    image: redis
+    container_name: redis_encurtador
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+
+  redis-commander:
+    container_name: redis-commander_encurtador
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis_encurtador:6379
+    ports:
+    - "8081:8081"

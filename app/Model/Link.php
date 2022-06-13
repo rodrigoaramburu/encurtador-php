@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-class Link
+final class Link
 {
     public function __construct(
         private string $id,
         private string $url,
-    ){   
+    ) {
     }
 
     public function id(): string
@@ -20,5 +20,4 @@ class Link
     {
         return $this->url;
     }
-
 }

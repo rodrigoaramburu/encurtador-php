@@ -2,34 +2,33 @@
 
 declare(strict_types=1);
 
+use App\Actions\EnqueueViewInterface;
 use App\Model\Link;
-use App\Actions\GenerateLink;
-use App\Actions\RetrieveLink;
+use App\Actions\GenerateLinkInterface;
+use App\Actions\RetrieveLinkInterface;
 use App\Exception\IdExistsException;
+use Psr\Http\Message\RequestInterface;
 use App\Exception\LinkNotFoundException;
-use App\Repository\LinkRepositoryInterface;
 
 beforeEach(function(){
-    $bootstrap = require(__DIR__ . '/../../app/bootstrap.php');
-    $this->app = $bootstrap();
-    
-    $errorMiddleware = require(__DIR__.'/../../app/middleware/error.php');
-    $errorMiddleware($this->app);
-    
-    $routes = require(__DIR__ . '/../../app/routes.php');
-    $routes($this->app);
 
-    $this->generateLink = Mockery::mock(GenerateLink::class);
-    $this->retrieveLink = Mockery::mock(RetrieveLink::class);
+    $this->app = (require(__DIR__ . '/../../config/bootstrap.php'))();
 
-    $this->app->getContainer()->set(GenerateLink::class, $this->generateLink);
-    $this->app->getContainer()->set(RetrieveLink::class, $this->retrieveLink);
+    $this->generateLink = Mockery::mock(GenerateLinkInterface::class);
+    $this->retrieveLink = Mockery::mock(RetrieveLinkInterface::class);
+    $this->queueView = Mockery::mock(EnqueueViewInterface::class);
+
+    $this->app->getContainer()->set(GenerateLinkInterface::class, $this->generateLink);
+    $this->app->getContainer()->set(RetrieveLinkInterface::class, $this->retrieveLink);
+    $this->app->getContainer()->set(EnqueueViewInterface::class, $this->queueView);
 });
 
 test('deve retornar um link', function(){
     $this->retrieveLink
         ->shouldReceive('execute')
         ->with('UES4d2')->andReturn(new Link('UES4d2', 'http://www.google.com'));
+
+    $this->queueView->shouldReceive('execute')->with('UES4d2', Mockery::type(RequestInterface::class));
 
     /** @var Request */
     $request = createRequest(method: 'GET', path: '/UES4d2');

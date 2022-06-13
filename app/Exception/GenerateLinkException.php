@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
@@ -6,10 +6,10 @@ namespace App\Exception;
 
 use Exception;
 
-class GenerateLinkException extends Exception
+final class GenerateLinkException extends Exception
 {
-    public function __construct(string $message = "", int $code = 0, Exception $previous = null)
+    public function __construct(string $message = '')
     {
-        parent::__construct($message, 500, $previous);
+        parent::__construct($message, 500);
     }
 }

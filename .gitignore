@@ -4,3 +4,4 @@ docker/mariadb_data
 .env
 logs/*
 coverage
+tests/k6-test

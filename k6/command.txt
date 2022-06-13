@@ -1,3 +1,0 @@
-docker run --volume "$PWD/k6/results:/results" --rm --network host -i grafana/k6 run --summary-export=/results/v1-gravar.json - < k6/create_test.js
-
-docker run --volume "$PWD/k6/results:/results" --rm --network host -i grafana/k6 run --summary-export=/results/v2-ler.json - < k6/retrieve_test.js

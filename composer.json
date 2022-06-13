@@ -24,7 +24,8 @@
 
     "config": {
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "require": {
@@ -32,14 +33,17 @@
         "slim/psr7": "^1.5",
         "php-di/php-di": "^6.3",
         "vlucas/phpdotenv": "^5.4",
-        "monolog/monolog": "^3.0"
+        "monolog/monolog": "^3.0",
+        "geoip2/geoip2": "~2.0"
     },
     "require-dev": {
         "pestphp/pest": "^1.21",
-        "mockery/mockery": "^1.5"
+        "mockery/mockery": "^1.5",
+        "phpstan/phpstan": "^1.7",
+        "nunomaduro/phpinsights": "^2.4"
     },
     "scripts": {
         "test": "./vendor/bin/pest",
-        "coverage-report": "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage-html coverage"
+        "coverage-report": "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage-html ./coverage"
     }
 }

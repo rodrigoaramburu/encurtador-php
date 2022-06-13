@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace  App\Util;
+namespace App\Util;
 
-class CacheRedis implements CacheInterface
+final class CacheRedis implements CacheInterface
 {
     public function __construct(
         private \Redis $redis
-    ){
+    ) {
     }
-
 
     public function get(string $key): string|false
     {

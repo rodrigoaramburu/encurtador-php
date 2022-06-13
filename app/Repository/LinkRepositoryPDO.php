@@ -1,33 +1,30 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
 namespace App\Repository;
 
-use PDO;
-use App\Model\Link;
 use App\Exception\IdExistsException;
+use App\Model\Link;
+use PDO;
 
-class LinkRepositoryPDO implements LinkRepositoryInterface
+final class LinkRepositoryPDO implements LinkRepositoryInterface
 {
-
     public function __construct(
         private PDO $conn
-    ){   
+    ) {
     }
 
     public function save(Link $link): void
     {
-        try{
+        try {
             $this->conn->prepare('INSERT INTO links (id, url) VALUES (:id, :url)')
                 ->execute([
                     'id' => $link->id(),
                     'url' => $link->url(),
                 ]);
-        }catch(\PDOException $e){
-            if($e->getCode() == 23000){
-                throw new IdExistsException('Id já existe');
-            } 
+        } catch (\PDOException $e) {
+            throw new IdExistsException('Id já existe');
         }
     }
     public function find(string $id): ?Link
@@ -35,8 +32,10 @@ class LinkRepositoryPDO implements LinkRepositoryInterface
         $query = $this->conn->prepare('SELECT * FROM links WHERE id = :id');
         $query->execute(['id' => $id]);
         $data = $query->fetch();
-        
-        if(!$data) return null;
+
+        if (! $data) {
+            return null;
+        }
 
         return new Link(
             id: $data['id'],

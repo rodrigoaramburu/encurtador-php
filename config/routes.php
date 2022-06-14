@@ -9,7 +9,7 @@ use Slim\Exception\HttpNotFoundException;
 return static function (App $app): void {
     $app->post('/api/encurtar', [LinkController::class,'encurtar']);
 
-    $app->get('/statistics/{id}', [LinkController::class,'statistics']);
+    $app->get('/api/statistics/{id}', [LinkController::class,'statistics']);
 
     $app->get('/{id}', [LinkController::class,'redirect']);
 

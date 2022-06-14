@@ -60,7 +60,7 @@ paths:
                   $ref: "#/components/schemas/ErrorMessage"
                 
                 
-  /statistics/{id}:
+  /api/statistics/{id}:
     get:
       summary: "Retorna as estatisticas de um link encurtado"
       description: ""

@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Actions\EnqueueViewInterface;
 use App\Actions\GenerateLinkInterface;
 use App\Actions\RetrieveLinkInterface;
+use App\Actions\StatisticsViewInterface;
 use App\Exception\GenerateLinkException;
 use App\Exception\IdExistsException;
 use App\Exception\LinkNotFoundException;
@@ -19,7 +20,8 @@ final class LinkController
     public function __construct(
         private GenerateLinkInterface $generateLink,
         private RetrieveLinkInterface $retrieveLink,
-        private EnqueueViewInterface $queueView
+        private EnqueueViewInterface $queueView,
+        private StatisticsViewInterface $statisticsView
     ) {
     }
 
@@ -61,6 +63,15 @@ final class LinkController
         }
 
         return $response->withHeader('Location', $link->url())->withStatus(301);
+    }
+
+    public function statistics(Request $request, Response $response, array $params = []): Response
+    {
+        $response->getBody()->write(json_encode(
+            $this->statisticsView->execute(id: $params['id']),
+        ));
+
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
 
     private function errorResponse(Exception $e, Response $response): Response

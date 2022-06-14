@@ -6,6 +6,7 @@ use App\Actions\EnqueueViewInterface;
 use App\Model\Link;
 use App\Actions\GenerateLinkInterface;
 use App\Actions\RetrieveLinkInterface;
+use App\Actions\StatisticsViewInterface;
 use App\Exception\IdExistsException;
 use Psr\Http\Message\RequestInterface;
 use App\Exception\LinkNotFoundException;
@@ -17,10 +18,12 @@ beforeEach(function(){
     $this->generateLink = Mockery::mock(GenerateLinkInterface::class);
     $this->retrieveLink = Mockery::mock(RetrieveLinkInterface::class);
     $this->queueView = Mockery::mock(EnqueueViewInterface::class);
+    $this->statisticsView = Mockery::mock(StatisticsViewInterface::class);
 
     $this->app->getContainer()->set(GenerateLinkInterface::class, $this->generateLink);
     $this->app->getContainer()->set(RetrieveLinkInterface::class, $this->retrieveLink);
     $this->app->getContainer()->set(EnqueueViewInterface::class, $this->queueView);
+    $this->app->getContainer()->set(StatisticsViewInterface::class, $this->statisticsView);
 });
 
 test('deve retornar um link', function(){
@@ -162,4 +165,49 @@ test('deve gerar erro se exceção ocorrer',function(){
     expect((string) $response->getBody())->json()
         ->code->toBe(500)
         ->message->toBe('Internal Error.');
+});
+
+
+
+test('deve retornar as estatisticas de um link', function(){
+    
+
+    $this->statisticsView->shouldReceive('execute')->with('UES4d2')->andReturn([
+        'total' => 4,
+        'browsers' => [
+            'Chrome' => 1,
+            'Firefox' => 2,
+            'Edge' => 1
+        ],
+        'os' => [
+            'Win10' => 3,
+            'Linux' => 1
+        ],
+        'countries' => [
+            'BR' => 3,
+            'US' => 1
+        ],
+    ]);
+
+    /** @var Request */
+    $request = createRequest(method: 'GET', path: '/statistics/UES4d2');
+    $response = $this->app->handle($request);
+
+    expect($response->getStatusCode())->toBe(200);
+    expect((string) $response->getBody())->json()
+        ->total->toBe(4)
+        ->browsers->toBe([
+            'Chrome' => 1,
+            'Firefox' => 2,
+            'Edge' => 1
+        ])
+        ->os->toBe([
+            'Win10' => 3,
+            'Linux' => 1
+        ])
+        ->countries->toBe([
+            'BR' => 3,
+            'US' => 1
+        ]);
+    
 });

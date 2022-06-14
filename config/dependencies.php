@@ -9,6 +9,8 @@ use App\Actions\GenerateLink;
 use App\Actions\GenerateLinkInterface;
 use App\Actions\RetrieveLink;
 use App\Actions\RetrieveLinkInterface;
+use App\Actions\StatisticsView;
+use App\Actions\StatisticsViewInterface;
 use App\Repository\LinkRepositoryInterface;
 use App\Repository\LinkRepositoryPDO;
 use App\Repository\ViewRepositoryInterface;
@@ -64,5 +66,6 @@ return [
     GenerateLinkInterface::class => \DI\autowire(GenerateLink::class),
     EnqueueViewInterface::class => \DI\autowire(EnqueueView::class),
     DequeueViewInterface::class => \DI\autowire(DequeueView::class),
+    StatisticsViewInterface::class => \DI\autowire(StatisticsView::class),
 
 ];

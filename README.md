@@ -23,4 +23,6 @@ docker exec -it php_encurtador php worker.php
 ```
 
 
+### Rotas 
 
+Ver arquivo oepnapi.yaml

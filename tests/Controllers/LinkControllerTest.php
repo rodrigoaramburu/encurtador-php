@@ -152,12 +152,11 @@ test('deve gerar erro se endereço não existe',function(){
 
 test('deve gerar erro se exceção ocorrer',function(){
 
-    $this->app->get('/api/exception',function(){
-        throw new \Exception('Erro');
-    });
+    $this->retrieveLink->shouldReceive('execute')->andThrow(new \Exception('Erro'));
+    
 
     /** @var Request */
-    $request = createRequest(method: 'GET', path: '/api/exception' );
+    $request = createRequest(method: 'GET', path: '/AdC32E' );
 
     $response = $this->app->handle($request);
 
@@ -170,7 +169,7 @@ test('deve gerar erro se exceção ocorrer',function(){
 
 
 test('deve retornar as estatisticas de um link', function(){
-    
+   
 
     $this->statisticsView->shouldReceive('execute')->with('UES4d2')->andReturn([
         'total' => 4,
@@ -210,4 +209,20 @@ test('deve retornar as estatisticas de um link', function(){
             'US' => 1
         ]);
     
+});
+
+test('deve lançar exceção se id do link não existir quando visualizar estatistica', function(){
+
+    $this->statisticsView
+        ->shouldReceive('execute')
+        ->with('UES4d2')
+        ->andThrow( new LinkNotFoundException('Link não encontrado') );
+
+    /** @var Request */
+    $request = createRequest(method: 'GET', path: '/api/statistics/UES4d2');
+    $response = $this->app->handle($request);
+
+    expect((string) $response->getBody())->json()
+        ->code->toBe(404)
+        ->message->toBe('Link não encontrado');
 });

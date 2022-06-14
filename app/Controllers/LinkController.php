@@ -67,9 +67,13 @@ final class LinkController
 
     public function statistics(Request $request, Response $response, array $params = []): Response
     {
-        $response->getBody()->write(json_encode(
-            $this->statisticsView->execute(id: $params['id']),
-        ));
+        try {
+            $response->getBody()->write(json_encode(
+                $this->statisticsView->execute(id: $params['id']),
+            ));
+        } catch (LinkNotFoundException $e) {
+            return $this->errorResponse($e, $response);
+        }
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }

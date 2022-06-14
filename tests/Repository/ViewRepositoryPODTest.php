@@ -122,3 +122,21 @@ test('deve retornar estatísticas de total por country', function(){
     ]);
 
 });
+
+test('deve retornar array vazio se não existir registros de visualizaçaões de browser', function(){
+    $result = $this->repository->statisticsBrowser('BOTECO');
+
+    expect($result)->toBe([]);
+}); 
+
+test('deve retornar array vazio se não existir registros de visualizaçaões de os', function(){
+    $result = $this->repository->statisticsOs('BOTECO');
+
+    expect($result)->toBe([]);
+}); 
+
+test('deve retornar array vazio se não existir registros de visualizaçaões de country', function(){
+    $result = $this->repository->statisticsCountry('BOTECO');
+
+    expect($result)->toBe([]);
+}); 

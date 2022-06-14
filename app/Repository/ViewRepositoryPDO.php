@@ -44,7 +44,7 @@ final class ViewRepositoryPDO implements ViewRepositoryInterface
         while ($result = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $browsers[$result['browser']] = $result['total'];
         }
-        return $browsers;
+        return $browsers ?? [];
     }
 
     public function statisticsOS(string $id): array
@@ -56,7 +56,7 @@ final class ViewRepositoryPDO implements ViewRepositoryInterface
             $os[$result['os']] = $result['total'];
         }
 
-        return $os;
+        return $os ?? [];
     }
 
     public function statisticsCountry(string $id): array
@@ -68,6 +68,6 @@ final class ViewRepositoryPDO implements ViewRepositoryInterface
             $country[$result['countryISO']] = $result['total'];
         }
 
-        return $country;
+        return $country ?? [];
     }
 }

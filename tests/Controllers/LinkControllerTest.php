@@ -190,7 +190,7 @@ test('deve retornar as estatisticas de um link', function(){
     ]);
 
     /** @var Request */
-    $request = createRequest(method: 'GET', path: '/statistics/UES4d2');
+    $request = createRequest(method: 'GET', path: '/api/statistics/UES4d2');
     $response = $this->app->handle($request);
 
     expect($response->getStatusCode())->toBe(200);

@@ -19,10 +19,10 @@ use Slim\Factory\AppFactory;
      AppFactory::setContainer($container);
      $app = AppFactory::create();
      $app->addBodyParsingMiddleware();
-
+     
      (require __DIR__ . '/routes.php')($app);
-
+     
      (require __DIR__ . '/middlewares.php')($app);
-
+     
      return $app;
  };

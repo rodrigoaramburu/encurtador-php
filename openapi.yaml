@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  description: "Encurtador de Link"
+  version: "1.0"
+  title: "Encurtador de Link"
+
+servers:
+  - url: http://localhost:8000
+
+paths:
+  /{id}:
+    get:
+      summary: "Redireciona um link"
+      description: "Recebe um id de um link encurtado e redireciona para endereço correspondente"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      responses:
+        "301":
+          description: "redirect"
+        "404":
+          description: "Página não encontrada"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+  
+  /api/encurtar:
+    post:
+      summary: "Cria um novo link encurtado"
+      description: ""
+      requestBody: 
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkEncurtadoRequest"
+              
+      responses:
+        "201":
+          description: "Link criado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LinkEncurtadoResponse"
+        "409":
+          description: "Id já existe"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "400":
+          description: "URL não informada"
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ErrorMessage"
+                
+                
+  /statistics/{id}:
+    get:
+      summary: "Retorna as estatisticas de um link encurtado"
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          description: "ID do link encurtado"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Estatisticas do link encurtado"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  browsers:
+                    type: object
+                  os: 
+                    type: object
+                  countries:
+                    type: object
+        "404":
+          description: "Página não encontrada"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+            
+      
+              
+
+components:
+  schemas:
+    ErrorMessage:
+      type: object
+      properties:
+        code: 
+          type: integer
+        message: 
+          type: string
+          
+    LinkEncurtadoRequest:
+      type: object
+      properties:
+        id: 
+          type: string
+        url: 
+          type: string
+      required:
+        - url
+          
+    LinkEncurtadoResponse:
+      type: object
+      properties:
+        id: 
+          type: string
+        url: 
+          type: string
+      required:
+        - id
+        - url
+          

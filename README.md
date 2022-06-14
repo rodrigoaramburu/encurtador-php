@@ -1,5 +1,7 @@
 ## Encurtador de Url
 
+Pequeno encurtador de url feito em php para praticar.
+
 ### Como rodar a aplicação
 
 A aplicação roda através do docker com docker-compose em um servidor nginx
